@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql:5.7
+    container_name: db
+    ports: 
+      - '3306:3306'
+    environment:  
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - './dbfile:/var/lib/mysql'
+      - './db/:/data/application/'
+    command: --init-file /data/application/init.sql
+    
+
+  front:
+    image: web:latest
+    ports:
+      - '8080:80'
+    volumes:
+      - './front:/var/www/html'
+    depends_on:
+      - db
+    
